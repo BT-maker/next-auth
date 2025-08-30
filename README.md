@@ -1,6 +1,8 @@
-# Next.js + Auth0 + NextAuth Authentication System
+# 🔐 Next.js + NextAuth.js Authentication System
 
-SOLID prensiplerine ve 12 Factor App ilkelerine uygun, Next.js 14 tabanlı kimlik doğrulama ve yetkilendirme sistemi.
+SOLID prensiplerine ve 12 Factor App ilkelerine uygun, Next.js 14 tabanlı çoklu kimlik doğrulama ve yetkilendirme sistemi.
+
+> **Google, GitHub, Facebook, Twitter, Auth0 ve Demo girişleri destekler**
 
 ## 🚀 Özellikler
 
