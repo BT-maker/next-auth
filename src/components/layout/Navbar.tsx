@@ -23,8 +23,40 @@ export function Navbar() {
       
       console.log('SignOut result:', result)
       
-      // Sayfayı yenile
-      window.location.href = '/'
+      // Tüm cookie'leri temizle (daha kapsamlı)
+      const cookies = document.cookie.split(";");
+      cookies.forEach(function(cookie) {
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=localhost";
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.localhost";
+      });
+      
+      // LocalStorage ve SessionStorage'ı temizle
+      localStorage.clear();
+      sessionStorage.clear();
+      
+      // NextAuth session cookie'lerini özel olarak temizle
+      const nextAuthCookies = [
+        'next-auth.session-token',
+        'next-auth.csrf-token', 
+        'next-auth.callback-url',
+        '__Secure-next-auth.session-token',
+        '__Host-next-auth.csrf-token'
+      ];
+      
+      nextAuthCookies.forEach(cookieName => {
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;`;
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.localhost;`;
+      });
+      
+      // Auth0'dan da çıkış yap (eğer Auth0 ile giriş yapıldıysa)
+      const auth0LogoutUrl = `https://dev-3b6re7yppgza2cuq.us.auth0.com/v2/logout?client_id=GFd5YXJ4QAECNem6iXcLggSWGJBNTNzd&returnTo=${encodeURIComponent(window.location.origin)}`;
+      
+      // Sayfayı tamamen yenile
+      window.location.href = auth0LogoutUrl
     } catch (error) {
       console.error('Logout error:', error)
       // Hata durumunda manuel olarak ana sayfaya yönlendir

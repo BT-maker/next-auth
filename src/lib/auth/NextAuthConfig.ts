@@ -84,19 +84,19 @@ export const getNextAuthConfig = (): NextAuthOptions => {
               scope: 'openid profile email',
             },
           },
-          // Development için daha esnek ayarlar
-          allowDangerousEmailAccountLinking: true,
         }),
       ]),
     ],
     session: {
       strategy: 'jwt',
-      maxAge: 24 * 60 * 60, // 24 hours
-      updateAge: 60 * 60, // 1 hour
+      maxAge: 60 * 60, // 1 hour (daha kısa süre)
+      updateAge: 60 * 5, // 5 minutes
     },
     jwt: {
       encode: async ({ secret, token }) => {
         if (!token) return ''
+        
+        console.log('JWT Encode - Token:', token)
         
         // Custom JWT encoding using our JWTService
         const user = {
@@ -107,32 +107,56 @@ export const getNextAuthConfig = (): NextAuthOptions => {
           role: (token.role as UserRole) || UserRole.USER,
         }
         
-        return jwtService.generateToken(user)
+        const encodedToken = jwtService.generateToken(user)
+        console.log('JWT Encode - Encoded Token:', encodedToken)
+        
+        return encodedToken
       },
       decode: async ({ secret, token }) => {
         if (!token) return null
         
+        console.log('JWT Decode - Token:', token)
+        
         try {
           const payload = jwtService.verifyToken(token)
+          console.log('JWT Decode - Payload:', payload)
           return payload as any
         } catch (error) {
+          console.error('JWT Decode - Error:', error)
           return null
         }
       },
     },
     callbacks: {
-      async jwt({ token, user, account }) {
+      async jwt({ token, user, account, profile }) {
+        console.log('JWT Callback - Token:', token)
+        console.log('JWT Callback - User:', user)
+        console.log('JWT Callback - Account:', account)
+        
         // Initial sign in
         if (account && user) {
-          return {
+          // Auth0'dan gelen kullanıcı için role belirleme
+          let userRole = UserRole.USER
+          if (user.email === 'admin@example.com' || user.email?.includes('admin')) {
+            userRole = UserRole.ADMIN
+          }
+          
+          const newToken = {
             ...token,
-            role: user.role || UserRole.USER,
+            role: userRole,
             accessToken: account.access_token,
+            sub: user.id || user.email,
           } as any
+          
+          console.log('JWT Callback - New Token:', newToken)
+          return newToken
         }
         return token
       },
       async session({ session, token }) {
+        console.log('Session Callback - Token:', token)
+        console.log('Session Callback - Session:', session)
+        
         if (token && session.user) {
           session.user.id = token.sub || ''
           session.user.role = token.role || UserRole.USER

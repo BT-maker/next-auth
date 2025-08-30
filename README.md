@@ -277,19 +277,4 @@ docker build -t next-auth-app .
 docker run -p 3000:3000 next-auth-app
 ```
 
-## 🤝 Katkıda Bulunma
 
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit yapın (`git commit -m 'Add amazing feature'`)
-4. Push yapın (`git push origin feature/amazing-feature`)
-5. Pull Request açın
-
-## 📄 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır.
-
-## 🆘 Destek
-
-Sorularınız için issue açabilir veya [email@example.com] adresine mail atabilirsiniz.
-# next-auth
