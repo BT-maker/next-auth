@@ -1,11 +1,13 @@
 // Single Responsibility Principle: Login button only
 'use client'
 
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { UserRole } from '@/lib/auth/types'
+import { useLogout } from '@/lib/auth/useLogout'
 
 export function LoginButton() {
   const { data: session, status } = useSession()
+  const { logout } = useLogout()
 
   if (status === 'loading') {
     return (
@@ -24,7 +26,7 @@ export function LoginButton() {
           <p className="text-xs text-gray-400 capitalize">Role: {session.user?.role || 'N/A'}</p>
         </div>
         <button 
-          onClick={() => signOut({ callbackUrl: '/' })}
+          onClick={() => logout('/')}
           className="btn-secondary"
         >
           Sign Out

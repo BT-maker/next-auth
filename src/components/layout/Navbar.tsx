@@ -1,68 +1,18 @@
 'use client'
 
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useLogout } from '@/lib/auth/useLogout'
 
 export function Navbar() {
   const { data: session, status } = useSession()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { logout } = useLogout()
 
   // Debug için session bilgilerini console'a yazdır
   console.log('Session Status:', status)
   console.log('Session Data:', session)
-
-  const handleSignOut = async () => {
-    console.log('Logout başlatılıyor...')
-    try {
-      // NextAuth signOut'u çağır
-      const result = await signOut({ 
-        callbackUrl: '/',
-        redirect: false 
-      })
-      
-      console.log('SignOut result:', result)
-      
-      // Tüm cookie'leri temizle (daha kapsamlı)
-      const cookies = document.cookie.split(";");
-      cookies.forEach(function(cookie) {
-        const eqPos = cookie.indexOf("=");
-        const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim();
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=localhost";
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.localhost";
-      });
-      
-      // LocalStorage ve SessionStorage'ı temizle
-      localStorage.clear();
-      sessionStorage.clear();
-      
-      // NextAuth session cookie'lerini özel olarak temizle
-      const nextAuthCookies = [
-        'next-auth.session-token',
-        'next-auth.csrf-token', 
-        'next-auth.callback-url',
-        '__Secure-next-auth.session-token',
-        '__Host-next-auth.csrf-token'
-      ];
-      
-      nextAuthCookies.forEach(cookieName => {
-        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=localhost;`;
-        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.localhost;`;
-      });
-      
-      // Auth0'dan da çıkış yap (eğer Auth0 ile giriş yapıldıysa)
-      const auth0LogoutUrl = `https://dev-3b6re7yppgza2cuq.us.auth0.com/v2/logout?client_id=GFd5YXJ4QAECNem6iXcLggSWGJBNTNzd&returnTo=${encodeURIComponent(window.location.origin)}`;
-      
-      // Sayfayı tamamen yenile
-      window.location.href = auth0LogoutUrl
-    } catch (error) {
-      console.error('Logout error:', error)
-      // Hata durumunda manuel olarak ana sayfaya yönlendir
-      window.location.href = '/'
-    }
-  }
 
   return (
     <nav className="bg-white shadow-lg border-b border-gray-200">
@@ -141,27 +91,27 @@ export function Navbar() {
 
                 {/* Logout Button */}
                 <button
-                  onClick={handleSignOut}
+                  onClick={() => logout('/')}
                   className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
                 >
                   Çıkış Yap
                 </button>
               </div>
             ) : (
-                             <div className="flex space-x-2">
-                 <button
-                   onClick={() => signIn('demo')}
-                   className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                 >
-                   Demo Giriş
-                 </button>
-                 <button
-                   onClick={() => signIn('auth0')}
-                   className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                 >
-                   Auth0 ile Giriş
-                 </button>
-               </div>
+              <div className="flex space-x-2">
+                <button
+                  onClick={() => signIn('demo')}
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Demo Giriş
+                </button>
+                <button
+                  onClick={() => signIn('auth0')}
+                  className="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                >
+                  Auth0 ile Giriş
+                </button>
+              </div>
             )}
 
             {/* Mobile menu button */}
@@ -254,7 +204,7 @@ export function Navbar() {
               <div className="mt-3 space-y-1">
                 <button
                   onClick={() => {
-                    handleSignOut()
+                    logout('/')
                     setIsMenuOpen(false)
                   }}
                   className="block w-full text-left px-4 py-2 text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-50 rounded-md"

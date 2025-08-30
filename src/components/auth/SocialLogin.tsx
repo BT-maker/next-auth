@@ -103,11 +103,13 @@ export function SocialLogin({ onSuccess, onError }: SocialLoginProps) {
         ))}
       </div>
 
-             <div className="text-center">
-         <p className="text-xs text-gray-500">
-           Demo modda sosyal girişler çalışmaz. Gerçek OAuth entegrasyonu için demo modu kapatın.
-         </p>
-       </div>
+      {process.env.NODE_ENV === 'development' && (
+        <div className="text-center">
+          <p className="text-xs text-gray-500">
+            Geliştirme modunda. Gerçek OAuth entegrasyonu için environment variable'ları ayarlayın.
+          </p>
+        </div>
+      )}
     </div>
   )
 }

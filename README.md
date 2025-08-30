@@ -98,6 +98,21 @@ Auth0 ile gerçek OAuth entegrasyonu için:
 5. Client ID ve Client Secret'ı kopyalayın
 6. Domain URL'yi not alın
 7. `.env.local` dosyasına Auth0 bilgilerini ekleyin
+
+### 6. Çıkış Yapma (Logout) Özelliği
+
+Sistem, Auth0 ile giriş yapıldığında otomatik olarak Auth0'dan da çıkış yapar. Bu sayede:
+
+- **Token Temizleme**: NextAuth session token'ları temizlenir
+- **Auth0 Logout**: Auth0'dan da çıkış yapılır
+- **Otomatik Giriş Engelleme**: Bir sonraki giriş denemesinde Auth0 tekrar kimlik bilgilerini ister
+
+**Logout İşlemi:**
+1. Kullanıcı "Çıkış Yap" butonuna tıklar
+2. NextAuth session'ı temizlenir
+3. Auth0 ile giriş yapılmışsa Auth0 logout URL'sine yönlendirilir
+4. Auth0'dan çıkış yapıldıktan sonra ana sayfaya döner
+5. Tüm token'lar ve session verileri temizlenir
 8. `DEMO_MODE='false'` yapın
 
 ### 6. Sosyal Medya OAuth Kurulumu (İsteğe Bağlı)

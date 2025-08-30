@@ -14,7 +14,7 @@ export default function SignInPage() {
   const router = useRouter()
 
   const demoUsers = [
-    { email: 'admin@example.com', password: 'admin123', name: 'Admin User', role: 'Admin' },
+    { email: 'bahattok6@gmail.com', password: 'admin123', name: 'Admin User', role: 'Admin' },
     { email: 'user@example.com', password: 'user123', name: 'Regular User', role: 'User' },
     { email: 'john@example.com', password: 'john123', name: 'John Doe', role: 'User' },
     { email: 'jane@example.com', password: 'jane123', name: 'Jane Smith', role: 'Admin' },

@@ -53,26 +53,24 @@ export const getNextAuthConfig = (): NextAuthOptions => {
           }
         },
       }),
-      // Sosyal Medya Provider'ları (Demo modda devre dışı)
-      ...(isDemoMode ? [] : [
-        GoogleProvider({
-          clientId: process.env.GOOGLE_CLIENT_ID || 'demo-google-client-id',
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'demo-google-client-secret',
-        }),
-        GitHubProvider({
-          clientId: process.env.GITHUB_CLIENT_ID || 'demo-github-client-id',
-          clientSecret: process.env.GITHUB_CLIENT_SECRET || 'demo-github-client-secret',
-        }),
-        FacebookProvider({
-          clientId: process.env.FACEBOOK_CLIENT_ID || 'demo-facebook-client-id',
-          clientSecret: process.env.FACEBOOK_CLIENT_SECRET || 'demo-facebook-client-secret',
-        }),
-        TwitterProvider({
-          clientId: process.env.TWITTER_CLIENT_ID || 'demo-twitter-client-id',
-          clientSecret: process.env.TWITTER_CLIENT_SECRET || 'demo-twitter-client-secret',
-          version: '2.0',
-        }),
-      ]),
+      // Sosyal Medya Provider'ları
+      GoogleProvider({
+        clientId: process.env.GOOGLE_CLIENT_ID || 'demo-google-client-id',
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'demo-google-client-secret',
+      }),
+      GitHubProvider({
+        clientId: process.env.GITHUB_CLIENT_ID || 'demo-github-client-id',
+        clientSecret: process.env.GITHUB_CLIENT_SECRET || 'demo-github-client-secret',
+      }),
+      FacebookProvider({
+        clientId: process.env.FACEBOOK_CLIENT_ID || 'demo-facebook-client-id',
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET || 'demo-facebook-client-secret',
+      }),
+      TwitterProvider({
+        clientId: process.env.TWITTER_CLIENT_ID || 'demo-twitter-client-id',
+        clientSecret: process.env.TWITTER_CLIENT_SECRET || 'demo-twitter-client-secret',
+        version: '2.0',
+      }),
       // Auth0 Provider (optional)
       ...(isDemoMode ? [] : [
         Auth0Provider({
@@ -145,6 +143,7 @@ export const getNextAuthConfig = (): NextAuthOptions => {
             ...token,
             role: userRole,
             accessToken: account.access_token,
+            provider: account.provider, // Provider bilgisini sakla
             sub: user.id || user.email,
           } as any
           
@@ -161,6 +160,7 @@ export const getNextAuthConfig = (): NextAuthOptions => {
           session.user.id = token.sub || ''
           session.user.role = token.role || UserRole.USER
           session.accessToken = token.accessToken || ''
+          session.provider = token.provider || '' // Provider bilgisini session'a ekle
         }
         return session
       },

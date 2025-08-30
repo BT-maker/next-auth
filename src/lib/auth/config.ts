@@ -10,22 +10,22 @@ export class AuthConfiguration {
     
     this.config = {
       auth0Secret: isDemoMode 
-        ? this.getOptionalEnvVar('AUTH0_SECRET', 'demo-secret')
-        : this.getOptionalEnvVar('AUTH0_SECRET', 'demo-secret'),
+        ? 'demo-auth0-secret-key-2024'
+        : (process.env.AUTH0_SECRET || 'demo-auth0-secret-key-2024'),
       auth0BaseUrl: isDemoMode
-        ? this.getOptionalEnvVar('AUTH0_BASE_URL', 'http://localhost:3000')
-        : this.getRequiredEnvVar('AUTH0_BASE_URL'),
+        ? 'http://localhost:3000'
+        : (process.env.AUTH0_BASE_URL || 'http://localhost:3000'),
       auth0IssuerBaseUrl: isDemoMode
-        ? this.getOptionalEnvVar('AUTH0_ISSUER_BASE_URL', 'https://demo.auth0.com')
-        : this.getRequiredEnvVar('AUTH0_ISSUER_BASE_URL'),
+        ? 'https://demo.auth0.com'
+        : (process.env.AUTH0_ISSUER_BASE_URL || 'https://dev-3b6re7yppgza2cuq.us.auth0.com'),
       auth0ClientId: isDemoMode
-        ? this.getOptionalEnvVar('AUTH0_CLIENT_ID', 'demo-client-id')
-        : this.getRequiredEnvVar('AUTH0_CLIENT_ID'),
+        ? 'demo-client-id'
+        : (process.env.AUTH0_CLIENT_ID || 'G5x8R9RdkjhtYWPvFLXuAB9ZmGjli67e'),
       auth0ClientSecret: isDemoMode
-        ? this.getOptionalEnvVar('AUTH0_CLIENT_SECRET', 'demo-client-secret')
-        : this.getRequiredEnvVar('AUTH0_CLIENT_SECRET'),
-      nextAuthSecret: this.getRequiredEnvVar('NEXTAUTH_SECRET'),
-      jwtSecret: this.getRequiredEnvVar('JWT_SECRET'),
+        ? 'demo-client-secret'
+        : (process.env.AUTH0_CLIENT_SECRET || 'yyb-b13PFT323qCweF0b5loU52161kAgoANlaa vyz 1mFWWos V3UoDygkhKUQe3OM'),
+      nextAuthSecret: process.env.NEXTAUTH_SECRET || 'demo-nextauth-secret-key-2024',
+      jwtSecret: process.env.JWT_SECRET || 'demo-jwt-secret-key-2024',
     }
   }
 
@@ -39,14 +39,6 @@ export class AuthConfiguration {
 
   public getConfig(): AuthConfig {
     return this.config
-  }
-
-  private getRequiredEnvVar(key: string): string {
-    const value = process.env[key]
-    if (!value) {
-      throw new Error(`Missing required environment variable: ${key}`)
-    }
-    return value
   }
 
   public getOptionalEnvVar(key: string, defaultValue: string = ''): string {
