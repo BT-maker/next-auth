@@ -1,19 +1,19 @@
 # 🔐 Next.js + NextAuth.js Authentication System
 
-SOLID prensiplerine ve 12 Factor App ilkelerine uygun, Next.js 14 tabanlı çoklu kimlik doğrulama ve yetkilendirme sistemi.
+A multi-authentication and authorization system based on Next.js 14, compliant with SOLID principles and 12 Factor App guidelines.
 
-> **Google, GitHub, Facebook, Twitter, Auth0 ve Demo girişleri destekler**
+> **Supports Google, GitHub, Facebook, Twitter, Auth0, and Demo logins**
 
-## 🚀 Özellikler
+## 🚀 Features
 
-- **🔐 Güvenli Kimlik Doğrulama**: Auth0 ile OAuth 2.0 ve JWT tabanlı oturum yönetimi
-- **🛡️ Rol Bazlı Yetkilendirme**: Admin ve user rolleri ile sayfa erişim kontrolü
-- **⚡ Modern Teknolojiler**: Next.js 14, TypeScript, TailwindCSS
-- **🏗️ SOLID Prensipleri**: Temiz kod mimarisi ve sürdürülebilir yapı
-- **📋 12 Factor App**: Cloud-native uygulama geliştirme standartları
-- **🐳 Docker Desteği**: Containerization ve deployment hazırlığı
+- **🔐 Secure Authentication**: OAuth 2.0 and JWT-based session management with Auth0
+- **🛡️ Role-Based Authorization**: Page access control with admin and user roles
+- **⚡ Modern Technologies**: Next.js 14, TypeScript, TailwindCSS
+- **🏗️ SOLID Principles**: Clean code architecture and maintainable structure
+- **📋 12 Factor App**: Cloud-native application development standards
+- **🐳 Docker Support**: Containerization and deployment ready
 
-## 🛠️ Teknolojiler
+## 🛠️ Technologies
 
 - **Frontend**: Next.js 14 (App Router), TypeScript, TailwindCSS
 - **Authentication**: NextAuth.js, Auth0 OAuth Provider
@@ -21,7 +21,7 @@ SOLID prensiplerine ve 12 Factor App ilkelerine uygun, Next.js 14 tabanlı çokl
 - **Development**: ESLint, PostCSS, Autoprefixer
 - **Deployment**: Docker, Docker Compose
 
-## 📁 Proje Yapısı
+## 📁 Project Structure
 
 ```
 src/
@@ -38,30 +38,30 @@ src/
 └── middleware.ts          # Route protection
 ```
 
-## 🚀 Kurulum
+## 🚀 Installation
 
-### 1. Repository Klonlama
+### 1. Clone Repository
 
 ```bash
 git clone <repository-url>
 cd next-auth-project
 ```
 
-### 2. Bağımlılıkları Yükleme
+### 2. Install Dependencies
 
 ```bash
 npm install
 ```
 
-### 3. Environment Değişkenleri
+### 3. Environment Variables
 
-`.env.local` dosyasını oluşturun:
+Create `.env.local` file:
 
 ```bash
 cp env.example .env.local
 ```
 
-Gerekli değişkenleri doldurun:
+Fill in the required variables:
 
 ```env
 # NextAuth Configuration
@@ -75,100 +75,100 @@ JWT_SECRET='your-jwt-secret'
 DEMO_MODE='true'
 ```
 
-### 4. Demo Mod (Test İçin)
+### 4. Demo Mode (For Testing)
 
-Proje varsayılan olarak demo modda çalışır. Bu modda Auth0 kurulumu gerekmez.
+The project runs in demo mode by default. Auth0 setup is not required in this mode.
 
-**Demo Kullanıcılar:**
-- **Admin:** admin@example.com (şifre: admin123)
-- **User:** user@example.com (şifre: user123)
-- **John:** john@example.com (şifre: john123)
-- **Jane:** jane@example.com (şifre: jane123)
+**Demo Users:**
+- **Admin:** admin@example.com (password: admin123)
+- **User:** user@example.com (password: user123)
+- **John:** john@example.com (password: john123)
+- **Jane:** jane@example.com (password: jane123)
 
-### 5. Auth0 Kurulumu (Gerçek Kullanım İçin)
+### 5. Auth0 Setup (For Real Usage)
 
-Auth0 ile gerçek OAuth entegrasyonu için:
+For real OAuth integration with Auth0:
 
-1. [Auth0 Dashboard](https://manage.auth0.com/)'a gidin
-2. Yeni bir Application oluşturun
-3. Application Type: "Single Page Application" seçin
-4. Settings'te şu URL'leri ekleyin:
+1. Go to [Auth0 Dashboard](https://manage.auth0.com/)
+2. Create a new Application
+3. Select Application Type: "Single Page Application"
+4. Add the following URLs in Settings:
    - **Allowed Callback URLs:** `http://localhost:3000/api/auth/callback/auth0`
    - **Allowed Logout URLs:** `http://localhost:3000`
    - **Allowed Web Origins:** `http://localhost:3000`
    - **Allowed Origins (CORS):** `http://localhost:3000`
-5. Client ID ve Client Secret'ı kopyalayın
-6. Domain URL'yi not alın
-7. `.env.local` dosyasına Auth0 bilgilerini ekleyin
+5. Copy Client ID and Client Secret
+6. Note the Domain URL
+7. Add Auth0 information to `.env.local` file
 
-### 6. Çıkış Yapma (Logout) Özelliği
+### 6. Logout Feature
 
-Sistem, Auth0 ile giriş yapıldığında otomatik olarak Auth0'dan da çıkış yapar. Bu sayede:
+The system automatically logs out from Auth0 when logged in with Auth0. This ensures:
 
-- **Token Temizleme**: NextAuth session token'ları temizlenir
-- **Auth0 Logout**: Auth0'dan da çıkış yapılır
-- **Otomatik Giriş Engelleme**: Bir sonraki giriş denemesinde Auth0 tekrar kimlik bilgilerini ister
+- **Token Cleanup**: NextAuth session tokens are cleared
+- **Auth0 Logout**: Also logs out from Auth0
+- **Prevent Auto Login**: Auth0 will ask for credentials again on the next login attempt
 
-**Logout İşlemi:**
-1. Kullanıcı "Çıkış Yap" butonuna tıklar
-2. NextAuth session'ı temizlenir
-3. Auth0 ile giriş yapılmışsa Auth0 logout URL'sine yönlendirilir
-4. Auth0'dan çıkış yapıldıktan sonra ana sayfaya döner
-5. Tüm token'lar ve session verileri temizlenir
-8. `DEMO_MODE='false'` yapın
+**Logout Process:**
+1. User clicks "Logout" button
+2. NextAuth session is cleared
+3. If logged in with Auth0, redirected to Auth0 logout URL
+4. After logging out from Auth0, returns to home page
+5. All tokens and session data are cleared
+6. Set `DEMO_MODE='false'`
 
-### 6. Sosyal Medya OAuth Kurulumu (İsteğe Bağlı)
+### 7. Social Media OAuth Setup (Optional)
 
-Eğer gerçek sosyal medya girişleri istiyorsanız:
+If you want real social media logins:
 
 #### Google OAuth
-1. [Google Cloud Console](https://console.cloud.google.com/)'a gidin
-2. Yeni bir proje oluşturun
-3. OAuth 2.0 Client ID oluşturun
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project
+3. Create OAuth 2.0 Client ID
 4. Authorized redirect URIs: `http://localhost:3000/api/auth/callback/google`
-5. Client ID ve Client Secret'ı `.env.local` dosyasına ekleyin
+5. Add Client ID and Client Secret to `.env.local` file
 
 #### GitHub OAuth
-1. [GitHub Developer Settings](https://github.com/settings/developers)'a gidin
-2. New OAuth App oluşturun
+1. Go to [GitHub Developer Settings](https://github.com/settings/developers)
+2. Create New OAuth App
 3. Authorization callback URL: `http://localhost:3000/api/auth/callback/github`
-4. Client ID ve Client Secret'ı `.env.local` dosyasına ekleyin
+4. Add Client ID and Client Secret to `.env.local` file
 
 #### Facebook OAuth
-1. [Facebook Developers](https://developers.facebook.com/)'a gidin
-2. Yeni bir App oluşturun
-3. Facebook Login ürününü ekleyin
+1. Go to [Facebook Developers](https://developers.facebook.com/)
+2. Create a new App
+3. Add Facebook Login product
 4. Valid OAuth Redirect URIs: `http://localhost:3000/api/auth/callback/facebook`
-5. App ID ve App Secret'ı `.env.local` dosyasına ekleyin
+5. Add App ID and App Secret to `.env.local` file
 
 #### Twitter OAuth
-1. [Twitter Developer Portal](https://developer.twitter.com/)'a gidin
-2. Yeni bir App oluşturun
-3. OAuth 2.0 ayarlarını yapılandırın
+1. Go to [Twitter Developer Portal](https://developer.twitter.com/)
+2. Create a new App
+3. Configure OAuth 2.0 settings
 4. Callback URL: `http://localhost:3000/api/auth/callback/twitter`
-5. Client ID ve Client Secret'ı `.env.local` dosyasına ekleyin
+5. Add Client ID and Client Secret to `.env.local` file
 
-### 7. Auth0 Kurulumu (İsteğe Bağlı)
+### 8. Auth0 Setup (Optional)
 
-Eğer gerçek Auth0 entegrasyonu istiyorsanız:
+If you want real Auth0 integration:
 
-1. [Auth0 Dashboard](https://manage.auth0.com/)'a gidin
-2. Yeni bir Application oluşturun
-3. Application Type: "Single Page Application" seçin
+1. Go to [Auth0 Dashboard](https://manage.auth0.com/)
+2. Create a new Application
+3. Select Application Type: "Single Page Application"
 4. Allowed Callback URLs: `http://localhost:3000/api/auth/callback/auth0`
 5. Allowed Logout URLs: `http://localhost:3000`
-6. Client ID ve Client Secret'ı `.env.local` dosyasına ekleyin
-7. `DEMO_MODE='false'` yapın
+6. Add Client ID and Client Secret to `.env.local` file
+7. Set `DEMO_MODE='false'`
 
-### 8. Geliştirme Sunucusu
+### 9. Development Server
 
 ```bash
 npm run dev
 ```
 
-Uygulama `http://localhost:3000` adresinde çalışacaktır.
+The application will run at `http://localhost:3000`.
 
-## 🐳 Docker ile Çalıştırma
+## 🐳 Running with Docker
 
 ### Production
 
@@ -182,59 +182,59 @@ docker-compose up --build
 docker-compose --profile dev up --build
 ```
 
-## 📋 SOLID Prensipleri Uygulaması
+## 📋 SOLID Principles Implementation
 
 ### 1. Single Responsibility Principle (SRP)
-- Her sınıf ve modül tek bir sorumluluğa sahip
-- `JWTService`: Sadece JWT işlemleri
-- `AuthConfiguration`: Sadece konfigürasyon yönetimi
-- `ProtectedRoute`: Sadece route koruması
+- Each class and module has a single responsibility
+- `JWTService`: Only JWT operations
+- `AuthConfiguration`: Only configuration management
+- `ProtectedRoute`: Only route protection
 
 ### 2. Open/Closed Principle (OCP)
-- Yeni auth provider'lar kolayca eklenebilir
-- Yeni roller genişletilebilir
-- Middleware kuralları genişletilebilir
+- New auth providers can be easily added
+- New roles can be extended
+- Middleware rules can be extended
 
 ### 3. Liskov Substitution Principle (LSP)
-- Auth provider'lar birbirinin yerine geçebilir
-- Farklı JWT implementasyonları uyumlu
+- Auth providers can substitute each other
+- Different JWT implementations are compatible
 
 ### 4. Interface Segregation Principle (ISP)
-- Küçük, özel amaçlı interface'ler
-- `AuthConfig`, `JWTPayload` gibi
+- Small, purpose-specific interfaces
+- Like `AuthConfig`, `JWTPayload`
 
 ### 5. Dependency Inversion Principle (DIP)
-- Yüksek seviye modüller düşük seviye detaylara bağımlı değil
-- Dependency injection kullanımı
+- High-level modules are not dependent on low-level details
+- Dependency injection usage
 
-## 📋 12 Factor App Uyumluluğu
+## 📋 12 Factor App Compliance
 
 ### 1. Codebase
-- Git repository ile versiyon kontrolü
-- Tek codebase, çoklu deployment
+- Version control with Git repository
+- One codebase, multiple deployments
 
 ### 2. Dependencies
-- `package.json` ile bağımlılık yönetimi
+- Dependency management with `package.json`
 - Explicit dependency declaration
 
 ### 3. Config
-- Environment variables ile konfigürasyon
-- `.env.local` dosyası
+- Configuration with environment variables
+- `.env.local` file
 
 ### 4. Backing Services
-- Auth0 external service entegrasyonu
+- Auth0 external service integration
 - Stateless service design
 
 ### 5. Build, Release, Run
-- `npm run build` ile build
-- `npm start` ile production run
+- Build with `npm run build`
+- Production run with `npm start`
 
 ### 6. Processes
 - Stateless process design
 - Share-nothing architecture
 
 ### 7. Port Binding
-- Environment variable ile port binding
+- Port binding with environment variable
 - `PORT=3000`
 
 ### 8. Concurrency
@@ -257,15 +257,15 @@ docker-compose --profile dev up --build
 - npm scripts for admin tasks
 - Docker support
 
-## 🔐 Güvenlik Özellikleri
+## 🔐 Security Features
 
-- **JWT Token Validation**: Token doğrulama ve süre kontrolü
-- **Role-Based Access Control**: Rol bazlı sayfa erişimi
-- **Middleware Protection**: Route seviyesinde koruma
-- **Environment Variables**: Hassas bilgilerin güvenli yönetimi
-- **HTTPS Ready**: Production için SSL hazırlığı
+- **JWT Token Validation**: Token validation and expiration control
+- **Role-Based Access Control**: Role-based page access
+- **Middleware Protection**: Route-level protection
+- **Environment Variables**: Secure management of sensitive information
+- **HTTPS Ready**: SSL ready for production
 
-## 🧪 Test
+## 🧪 Testing
 
 ```bash
 # Type checking
